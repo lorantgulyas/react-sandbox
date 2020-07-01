@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const Express = require('express')
+const shrinkRay = require('shrink-ray-current')
 const { default: makeServerMiddleware } = require('./build/server')
 const PORT = 3000
 
@@ -9,6 +10,26 @@ const assets = JSON.parse(
 )
 
 const app = Express()
+
+app.use(shrinkRay())
+
+// Helper function to turn snake_case to camelCase
+const camelize = str => {
+  return str
+    .replace('-', ' ')
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+      return index == 0 ? word.toLowerCase() : word.toUpperCase()
+    })
+    .replace(/\s+/g, '')
+}
+
+app.get('/_icon/:name', (req, res) => {
+  const name = req.params.name
+  const iconName = camelize('fa-' + name)
+  const icon = require('@fortawesome/free-solid-svg-icons/' + iconName)
+  res.setHeader('Content-Type', 'application/json')
+  res.send(JSON.stringify(icon))
+})
 
 // We generate all the js files in the same folder
 // But we don't want to render server.js or server.js.map
