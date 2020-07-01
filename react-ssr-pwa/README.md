@@ -8,6 +8,7 @@ https://medium.com/@valeria.viana.gusmao/developing-react-server-side-rendered-p
 - header management with react-helmet
 - compression with compression-webpack-plugin and brotli-webpack-plugin
 - SEO optimization, allow bots to scrape
+- testing with jest and react-test-renderer
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
