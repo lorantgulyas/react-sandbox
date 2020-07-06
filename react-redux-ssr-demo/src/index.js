@@ -49,7 +49,7 @@ app.get('*', (req, res) => {
   // some loadData() might still be pending and the rendered page will not be as complete as it might be 
   // (if all promises are waited to be finished, no matter if they fail or succeed) 
   // Solution -> Wrap each promise with another promise 
-  // If inner fails/succeds outer promise will be resolved, if inner promise pending outer promise pending too
+  // If inner fails/succeeds outer promise will be resolved, if inner promise pending outer promise pending too
   const promises = matchRoutes(Routes, req.path).map(({ route }) => {
     return route.loadData ? route.loadData(store) : null;
   }).map(promise => {
@@ -61,7 +61,7 @@ app.get('*', (req, res) => {
   });
 
   // Convert all the pending promises to a single one
-  // when inner promise finished -> outer promise succeds -> always .then branch will run
+  // when inner promise finished -> outer promise succeeds -> always .then branch will run
   // -> render the app on the server with all the preloaded data
   Promise.all(promises).then(() => {
     const context = {};
